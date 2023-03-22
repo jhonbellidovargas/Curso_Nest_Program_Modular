@@ -1,12 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
+import { ConfigService } from '@nestjs/config/dist';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { Order } from '../entities/order.entity';
 import { ProductsService } from 'src/products/services/products.service';
 @Injectable()
 export class UsersService {
-  constructor(private productsService: ProductsService) {}
+  constructor(
+    private productsService: ProductsService,
+    private configService: ConfigService,
+  ) {}
   private counterId = 1;
   private users: User[] = [
     {
@@ -18,6 +21,11 @@ export class UsersService {
   ];
 
   findAll() {
+    console.log(
+      `Obtuve el valor de la variable de entorno: ${this.configService.get(
+        'API_KEY',
+      )}`,
+    );
     return this.users;
   }
 
